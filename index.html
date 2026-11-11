@@ -176,6 +176,9 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;}
 .catGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;}
 .cg{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:7px 2px;font-size:11.5px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cg span{font-size:20px;} .cg.on{border-color:var(--pink);background:var(--pink-s);color:var(--pink-d);box-shadow:inset 0 0 0 1px var(--pink);}
+.inForm{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px;max-width:640px;}
+.saveBig{height:48px;font-size:16px;}
+.sub{overflow-y:hidden;}
 /* 로그인 */
 .login{max-width:360px;margin:12vh auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;text-align:center;}
 .login .logo{width:64px;height:64px;font-size:18px;border-radius:14px;margin:0 auto;}
@@ -309,26 +312,23 @@ function calHtml(){
   watch(calId(k)); watch(calId(pk)); watch('codes');
   const first = new Date(y, m-1, 1).getDay(), days = new Date(y, m, 0).getDate(), rows = Math.ceil((first + days)/7), today = todayStr();
   const evs = evOf(k).concat(evOf(pk).filter(e=> endOf(e) >= ds(y,m,1)));
-  const led = ledIn(ds(y,m,1), ds(y,m,days));
   let cells = '';
   for(let i = 0; i < rows*7; i++){
     const dn = i - first + 1;
     if(dn < 1 || dn > days){ cells += '<div class="cell out" aria-hidden="true"></div>'; continue; }
     const D = ds(y,m,dn), w = i % 7, hn = HOL[D] || '';
     const ev = evs.filter(e=> e.d <= D && endOf(e) >= D).sort((a,b)=> (a.t||'').localeCompare(b.t||''));
-    const le = led.filter(e=> e.date === D), out = le.filter(e=> e.type==='지출').reduce((s,e)=> s + e.amount, 0), inn = le.filter(e=> e.type==='수입').reduce((s,e)=> s + e.amount, 0);
     cells += `<button type="button" class="cell${w===0?' sun':w===6?' sat':''}${hn?' hl':''}${D===today?' today':''}" data-day="${D}">
       <div class="crow"><span class="num">${dn}</span>${hn ? `<span class="hol">${esc(hn)}</span>` : ''}</div>
       ${ev.slice(0,3).map(e=> `<span class="ev k${esc(e.k||'3')}">${esc(e.title||'')}${e.t && e.d===D ? ` <b>${esc(e.t)}</b>` : ''}</span>`).join('')}
       ${ev.length > 3 ? `<span class="more">+${ev.length-3}</span>` : ''}
-      ${out || inn ? `<span class="money">${inn ? `<span class="i"><span class="lg">+${won(inn)}</span><span class="sm">+${wonS(inn)}</span></span>` : ''}${out ? `<span class="o"><span class="lg">−${won(out)}</span><span class="sm">−${wonS(out)}</span></span>` : ''}</span>` : ''}
     </button>`;
   }
   return `<div class="top"><div class="nav"><button type="button" id="prev" aria-label="이전 달">‹</button><span class="ym">${y}년 ${m}월</span><button type="button" id="next" aria-label="다음 달">›</button></div>
     <button type="button" class="today" id="goToday">오늘</button><button type="button" class="btn pri" id="addEvTop">＋ 일정</button>
-    <div class="legend"><span><i style="background:#fbcfe8"></i>중요</span><span><i style="background:#fef08a"></i>일반</span><span><i style="background:#fff;border:1px solid #d1d5db"></i>기타</span><span style="color:var(--exp)">−지출</span><span style="color:var(--inc)">+수입</span></div></div>
+    <div class="legend"><span><i style="background:#fbcfe8"></i>중요</span><span><i style="background:#fef08a"></i>일반</span><span><i style="background:#fff;border:1px solid #d1d5db"></i>기타</span></div></div>
     <div class="grid" id="grid" style="--rows:${rows}">${W.split('').map((d,i)=> `<div class="dow${i===0?' sun':i===6?' sat':''}">${d}</div>`).join('')}${cells}</div>
-    <p class="note">날짜를 누르면 그날 일정과 가계부를 보고 바로 넣을 수 있어요. 휴대폰은 옆으로 밀면 달이 넘어가요.</p>`;
+    <p class="note">날짜를 누르면 그날 일정을 보고 바로 넣을 수 있어요. 휴대폰은 옆으로 밀면 달이 넘어가요.</p>`;
 }
 function go(n){ let {y,m} = ym; m += n; if(m < 1){ m = 12; y--; } if(m > 12){ m = 1; y++; } ym = {y,m}; ls.set('jjun_ym', ym); render(); }
 function bindCal(){
@@ -346,22 +346,16 @@ function renderPop(){
   if(!box){ box = document.createElement('div'); box.id = 'dayPop'; document.body.appendChild(box); }
   const D = popDay, k = D.slice(0,7), [y,m] = k.split('-').map(Number), pk = m===1 ? key(y-1,12) : key(y,m-1);
   const ev = evOf(k).concat(evOf(pk)).filter(e=> e.d <= D && endOf(e) >= D).sort((a,b)=> (a.t||'').localeCompare(b.t||''));
-  const le = ledIn(D, D);
   const [,mm,dd] = D.split('-').map(Number);
   box.innerHTML = `<div class="scrim" id="dpScrim"><div class="pop" role="dialog" aria-label="${mm}월 ${dd}일"><div class="popHd">${mm}월 ${dd}일 (${W[wd(D)]})${HOL[D] ? ` <span style="color:#dc2626;font-size:13px">${esc(HOL[D])}</span>` : ''}<button type="button" class="x" id="dpX" aria-label="닫기">✕</button></div>
     <div class="popBody">
-      <div class="secT">📅 일정</div>
       ${ev.length ? ev.map(e=> `<div class="item k${esc(e.k||'3')}" data-eid="${esc(e.id)}" data-ek="${esc(e.d.slice(0,7))}"><span class="bar"></span><div><b>${esc(e.title)}</b><div class="s">${e.t ? esc(e.t) : '하루 종일'}${e.e && e.e > e.d ? ` · ${esc(e.d.slice(5).replace('-','/'))}~${esc(e.e.slice(5).replace('-','/'))}` : ''}${e.memo ? '\n' + esc(e.memo) : ''}</div></div></div>`).join('') : '<div class="empty">일정이 없어요.</div>'}
-      <div class="secT">💰 가계부</div>
-      ${le.length ? le.map(e=> `<div class="item" data-lid="${esc(e.id)}"><div><b>${esc(e.cat)}${e.item ? ' · ' + esc(e.item) : ''}</b><div class="s">${esc(e.method||'')}${e.note ? ' · ' + esc(e.note) : ''}</div></div><span class="amt ${e.type==='수입'?'i':'o'}" style="color:var(${e.type==='수입'?'--inc':'--exp'})">${e.type==='수입'?'+':'−'}${won(e.amount)}</span></div>`).join('') : '<div class="empty">가계부 내역이 없어요.</div>'}
     </div>
-    <div class="popFt"><button type="button" class="btn pri" id="dpAddEv">＋ 일정</button><button type="button" class="btn" id="dpAddEn">＋ 가계부</button><span class="sp"></span><button type="button" class="btn" id="dpClose">닫기</button></div></div></div>`;
+    <div class="popFt"><button type="button" class="btn pri" id="dpAddEv">＋ 일정</button><span class="sp"></span><button type="button" class="btn" id="dpClose">닫기</button></div></div></div>`;
   const close = ()=>{ popDay = ''; renderPop(); };
   $('dpX').onclick = close; $('dpClose').onclick = close; $('dpScrim').onclick = e=>{ if(e.target.id==='dpScrim') close(); };
   $('dpAddEv').onclick = ()=>{ evEdit = {d: D, e:'', t:'', k:'3', title:'', memo:'', isNew:true}; render(); };
-  $('dpAddEn').onclick = ()=>{ enEdit = newEntry(D); render(); };
   box.querySelectorAll('[data-eid]').forEach(it=> it.onclick = ()=>{ const e = evOf(it.dataset.ek).find(x=> x.id===it.dataset.eid); if(e){ evEdit = Object.assign({}, e, {orig: e.id, origK: it.dataset.ek}); render(); } });
-  box.querySelectorAll('[data-lid]').forEach(it=> it.onclick = ()=>{ const e = le.find(x=> x.id===it.dataset.lid); if(e){ enEdit = Object.assign({}, e, {orig: e.id, origY: e.date.slice(0,4)}); render(); } });
 }
 function renderEv(){
   let box = $('evPop');
@@ -413,14 +407,14 @@ const sumOf = (list, t) => list.filter(e=> e.type===t).reduce((s,e)=> s + e.amou
 function monthNav(){ const {y, m} = lm; return `<div class="mNav"><button type="button" id="lmPrev" aria-label="이전 달">‹</button><b>${y}년 ${m}월</b><button type="button" id="lmNext" aria-label="다음 달">›</button><button type="button" class="today" id="lmToday">이번 달</button></div>`; }
 function ledHtml(){
   watch('codes'); watch('budget');
-  const tabs = [['list','📋 내역'],['stat','📊 통계'],['budget','🎯 예산'],['set','⚙️ 설정']];
+  const tabs = [['input','✏️ 입력'],['list','📋 내역'],['stat','📊 통계'],['budget','🎯 예산'],['set','⚙️ 설정']];
   if(!tabs.some(t=> t[0]===ledTab)) ledTab = 'list';
   const list = monthList(), inc = sumOf(list,'수입'), exp = sumOf(list,'지출');
   const head = `${monthNav()}
     <div class="sumBar"><div><span>수입</span><b class="i">+${won(inc)}</b></div><div><span>지출</span><b class="o">−${won(exp)}</b></div><div><span>합계</span><b class="${inc-exp<0?'o':''}">${inc-exp<0?'−':''}${won(Math.abs(inc-exp))}</b></div></div>
     <div class="sub">${tabs.map(([v,n])=> `<button type="button" data-lt="${v}" class="${ledTab===v?'on':''}">${n}</button>`).join('')}</div>`;
-  const body = ledTab==='list' ? listHtml(list) : ledTab==='stat' ? statHtml(list) : ledTab==='budget' ? budgetHtml(list) : setHtml();
-  return head + body + `<button type="button" class="fab" id="addEn" aria-label="가계부 쓰기">＋</button>`;
+  const body = ledTab==='input' ? inputHtml() : ledTab==='list' ? listHtml(list) : ledTab==='stat' ? statHtml(list) : ledTab==='budget' ? budgetHtml(list) : setHtml();
+  return head + body + (ledTab==='input' ? '' : `<button type="button" class="fab" id="addEn" aria-label="가계부 쓰기">＋</button>`);
 }
 function listHtml(list){
   const kw = (flt.kw||'').trim().toLowerCase();
@@ -465,7 +459,8 @@ function setHtml(){
 }
 function bindLed(){
   document.querySelectorAll('[data-lt]').forEach(b=> b.onclick = ()=>{ ledTab = b.dataset.lt; ls.set('jjun_ledTab', ledTab); render(); });
-  $('addEn').onclick = ()=>{ const {y,m} = lm, t = todayStr(); enEdit = newEntry(t.slice(0,7) === key(y,m) ? t : ds(y,m,1)); renderEn(); };
+  if($('addEn')) $('addEn').onclick = ()=>{ ledTab = 'input'; ls.set('jjun_ledTab', ledTab); render(); const a = document.querySelector('#inForm [data-f="a"]'); if(a) a.focus(); };   // ＋ → 입력 탭
+  bindInput();
   document.querySelectorAll('[data-lid]').forEach(tr=> tr.onclick = ()=>{ const e = (docs[ledId(tr.dataset.ly)] || []).find(x=> x.id===tr.dataset.lid); if(e){ enEdit = Object.assign({}, e, {orig: e.id, origY: tr.dataset.ly}); renderEn(); } });
   const mv = n=>{ let {y,m} = lm; m += n; if(m<1){m=12;y--;} if(m>12){m=1;y++;} lm = {y,m}; ls.set('jjun_lm', lm); render(); };
   $('lmPrev').onclick = ()=> mv(-1); $('lmNext').onclick = ()=> mv(1); $('lmToday').onclick = ()=>{ const t = new Date(); lm = {y:t.getFullYear(), m:t.getMonth()+1}; ls.set('jjun_lm', lm); render(); };
@@ -489,49 +484,88 @@ function bindLed(){
     li.innerHTML = `<input type="text" value="${esc(old)}" maxlength="20" style="flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font:inherit;font-size:15px;background:var(--card);color:var(--text)"><button type="button">저장</button>`;
     const inp = li.querySelector('input'); inp.focus(); li.querySelector('button').onclick = ()=>{ const v = inp.value.trim(); if(!v || v===old) return render(); const a = c[k].slice(); a[i] = v; c[k] = a; setCodes(c); }; });
 }
+// 가계부 입력 칸(입력 탭과 고치기 팝업이 같이 씀)
+function enFields(e){
+  const c = codes(), cats = e.type==='수입' ? c.inc : c.exp, catList = cats.includes(e.cat) || !e.cat ? cats : cats.concat(e.cat), mList = c.method.includes(e.method) || !e.method ? c.method : c.method.concat(e.method);
+  return `<div class="seg"><button type="button" data-t="지출" class="${e.type==='지출'?'on o':''}">지출</button><button type="button" data-t="수입" class="${e.type==='수입'?'on i':''}">수입</button></div>
+    <div class="amtBox ${e.type==='수입'?'i':'o'}"><input type="text" data-f="a" inputmode="numeric" value="${e.amount ? won(e.amount) : ''}" placeholder="0" aria-label="금액"><span>원</span></div>
+    <div class="catGrid">${catList.map(v=> `<button type="button" class="cg${v===e.cat?' on':''}" data-c="${esc(v)}"><span>${icon(v)}</span>${esc(v)}</button>`).join('')}</div>
+    <div class="form">
+      <label>날짜<input type="date" data-f="d" value="${esc(e.date)}"></label>
+      <label>결제 수단<select data-f="m">${mList.map(v=> `<option${v===e.method?' selected':''}>${esc(v)}</option>`).join('')}</select></label>
+      <label class="full">내용<input type="text" data-f="i" maxlength="60" value="${esc(e.item||'')}"></label>
+      <label class="full">메모<input type="text" data-f="n" maxlength="100" value="${esc(e.note||'')}" placeholder="선택"></label>
+    </div><div class="msg" data-f="msg"></div>`;
+}
+// root 안의 입력 칸을 묶음. redraw(): 지출/수입이 바뀌면 다시 그림. 저장 성공하면 true
+function bindEnFields(root, e, redraw){
+  const f = k=> root.querySelector(`[data-f="${k}"]`);
+  const keep = ()=>{ e.date = f('d').value; e.method = f('m').value; e.item = f('i').value; e.amount = +f('a').value.replace(/[^0-9]/g,'') || ''; e.note = f('n').value; };
+  root.querySelectorAll('[data-t]').forEach(b=> b.onclick = ()=>{ keep(); if(e.type === b.dataset.t) return; const c = codes(); e.type = b.dataset.t; e.cat = (e.type==='수입' ? c.inc : c.exp)[0]; redraw(); });
+  root.querySelectorAll('[data-c]').forEach(b=> b.onclick = ()=>{ e.cat = b.dataset.c; root.querySelectorAll('[data-c]').forEach(x=> x.classList.toggle('on', x===b)); });
+  f('a').oninput = ()=>{ const v = f('a').value.replace(/[^0-9]/g,''); f('a').value = v ? (+v).toLocaleString('ko-KR') : ''; };
+  const msg = t=> f('msg').textContent = t;
+  return {
+    keep,
+    async save(){
+      keep();
+      if(!(e.amount > 0)){ f('a').focus(); msg('금액을 넣어 주세요.'); return false; }
+      if(!e.date){ msg('날짜를 고르세요.'); return false; }
+      const item = {id: e.orig || uid(), date: e.date, type: e.type, cat: e.cat, item: e.item.trim(), method: e.method, amount: e.amount, note: e.note.trim(), ts: e.ts || Date.now()};
+      const ny = e.date.slice(0,4);
+      try{
+        if(e.origY && e.origY !== ny) await save(ledId(e.origY), (docs[ledId(e.origY)] || []).filter(x=> x.id !== item.id));
+        watch(ledId(ny));
+        const list = (docs[ledId(ny)] || []).filter(x=> x.id !== item.id); list.push(item);
+        await save(ledId(ny), list);
+        return true;
+      }catch(err){ msg('저장하지 못했어요: ' + ((err && err.code) || '오류')); return false; }
+    },
+    async remove(){
+      try{ await save(ledId(e.origY), (docs[ledId(e.origY)] || []).filter(x=> x.id !== e.orig)); return true; }
+      catch(err){ msg('지우지 못했어요: ' + ((err && err.code) || '오류')); return false; }
+    }
+  };
+}
 function renderEn(){
   let box = $('enPop');
   if(!enEdit){ if(box) box.remove(); return; }
   if(!box){ box = document.createElement('div'); box.id = 'enPop'; document.body.appendChild(box); }
-  const e = enEdit, c = codes(), cats = e.type==='수입' ? c.inc : c.exp, catList = cats.includes(e.cat) || !e.cat ? cats : cats.concat(e.cat), mList = c.method.includes(e.method) || !e.method ? c.method : c.method.concat(e.method);
-  box.innerHTML = `<div class="scrim" id="enScrim"><div class="pop" role="dialog" aria-label="가계부 쓰기"><div class="popHd">${e.isNew ? '가계부 쓰기' : '내역 고치기'}<button type="button" class="x" id="enX" aria-label="닫기">✕</button></div>
-    <div class="popBody">
-      <div class="seg"><button type="button" data-t="지출" class="${e.type==='지출'?'on o':''}">지출</button><button type="button" data-t="수입" class="${e.type==='수입'?'on i':''}">수입</button></div>
-      <div class="amtBox ${e.type==='수입'?'i':'o'}"><input type="text" id="enA" inputmode="numeric" value="${e.amount ? won(e.amount) : ''}" placeholder="0" aria-label="금액"><span>원</span></div>
-      <div class="catGrid">${catList.map(v=> `<button type="button" class="cg${v===e.cat?' on':''}" data-c="${esc(v)}"><span>${icon(v)}</span>${esc(v)}</button>`).join('')}</div>
-      <div class="form">
-        <label>날짜<input type="date" id="enD" value="${esc(e.date)}"></label>
-        <label>결제 수단<select id="enM">${mList.map(v=> `<option${v===e.method?' selected':''}>${esc(v)}</option>`).join('')}</select></label>
-        <label class="full">내용<input type="text" id="enI" maxlength="60" value="${esc(e.item||'')}"></label>
-        <label class="full">메모<input type="text" id="enN" maxlength="100" value="${esc(e.note||'')}" placeholder="선택"></label>
-      </div><div class="msg" id="enMsg"></div></div>
+  const e = enEdit;
+  box.innerHTML = `<div class="scrim" id="enScrim"><div class="pop" role="dialog" aria-label="가계부"><div class="popHd">${e.isNew ? '가계부 쓰기' : '내역 고치기'}<button type="button" class="x" id="enX" aria-label="닫기">✕</button></div>
+    <div class="popBody" id="enBody">${enFields(e)}</div>
     <div class="popFt">${e.isNew ? '' : '<button type="button" class="btn del" id="enDel">🗑 삭제</button>'}<span class="sp"></span><button type="button" class="btn" id="enCancel">취소</button><button type="button" class="btn pri" id="enSave">💾 저장</button></div></div></div>`;
   const close = ()=>{ enEdit = null; render(); };
   $('enX').onclick = close; $('enCancel').onclick = close; $('enScrim').onclick = ev=>{ if(ev.target.id==='enScrim') close(); };
-  const keep = ()=>{ e.date = $('enD').value; e.method = $('enM').value; e.item = $('enI').value; e.amount = +$('enA').value.replace(/[^0-9]/g,'') || ''; e.note = $('enN').value; };
-  box.querySelectorAll('[data-t]').forEach(b=> b.onclick = ()=>{ keep(); if(e.type === b.dataset.t) return; e.type = b.dataset.t; e.cat = (e.type==='수입' ? c.inc : c.exp)[0]; renderEn(); });
-  box.querySelectorAll('[data-c]').forEach(b=> b.onclick = ()=>{ e.cat = b.dataset.c; box.querySelectorAll('[data-c]').forEach(x=> x.classList.toggle('on', x===b)); });
-  $('enA').oninput = ()=>{ const v = $('enA').value.replace(/[^0-9]/g,''); $('enA').value = v ? (+v).toLocaleString('ko-KR') : ''; };
-  if(e.isNew) setTimeout(()=>{ const a = $('enA'); if(a && !a.value) a.focus(); }, 50);
-  const msg = t=> $('enMsg').textContent = t;
-  $('enSave').onclick = async ()=>{
-    keep();
-    if(!(e.amount > 0)){ $('enA').focus(); return msg('금액을 넣어 주세요.'); }
-    if(!e.date) return msg('날짜를 고르세요.');
-    const item = {id: e.orig || uid(), date: e.date, type: e.type, cat: e.cat, item: e.item.trim(), method: e.method, amount: e.amount, note: e.note.trim(), ts: e.ts || Date.now()};
-    const ny = e.date.slice(0,4);
-    try{
-      if(e.origY && e.origY !== ny) await save(ledId(e.origY), (docs[ledId(e.origY)] || []).filter(x=> x.id !== item.id));
-      watch(ledId(ny));
-      const list = (docs[ledId(ny)] || []).filter(x=> x.id !== item.id); list.push(item);
-      await save(ledId(ny), list);
-      enEdit = null; toast('저장했어요'); render();
-    }catch(err){ msg('저장하지 못했어요: ' + ((err && err.code) || '오류')); }
-  };
+  const ctl = bindEnFields($('enBody'), e, renderEn);
+  if(e.isNew) setTimeout(()=>{ const a = box.querySelector('[data-f="a"]'); if(a && !a.value) a.focus(); }, 50);
+  $('enSave').onclick = async ()=>{ if(await ctl.save()){ enEdit = null; toast('저장했어요'); render(); } };
   if($('enDel')){ let armed = false; $('enDel').onclick = async ()=>{
     if(!armed){ armed = true; $('enDel').textContent = '한 번 더 누르면 삭제'; return; }
-    try{ await save(ledId(e.origY), (docs[ledId(e.origY)] || []).filter(x=> x.id !== e.orig)); enEdit = null; toast('삭제했어요'); render(); }catch(err){ msg('지우지 못했어요: ' + ((err && err.code) || '오류')); }
+    if(await ctl.remove()){ enEdit = null; toast('삭제했어요'); render(); }
   }; }
+}
+// ----- 입력 탭: 페이지 안에서 바로 쓰기 + 방금 쓴 내역 -----
+let draft = null;
+function inputHtml(){
+  if(!draft) draft = newEntry();
+  const all = []; ledYears(addDays(todayStr(), -400), todayStr()).forEach(y=> (docs[ledId(y)] || []).forEach(x=> all.push(x)));
+  const recent = all.sort((a,b)=> (b.ts||0) - (a.ts||0)).slice(0, 8);
+  return `<div class="inForm" id="inForm">${enFields(draft)}<button type="button" class="btn pri saveBig" id="inSave">💾 저장</button></div>
+    <div class="secT" style="margin:16px 0 8px">최근에 쓴 내역</div>
+    ${recent.length ? `<div class="dayBlk">${recent.map(e=> `<button type="button" class="tx" data-lid="${esc(e.id)}" data-ly="${esc(e.date.slice(0,4))}"><span class="ic">${icon(e.cat)}</span><span class="tm"><b>${esc(e.item || e.cat)}</b><small>${esc(e.date.slice(5).replace('-','/'))} · ${esc(e.cat)}${e.method ? ' · ' + esc(e.method) : ''}</small></span><span class="am ${e.type==='수입'?'i':'o'}">${e.type==='수입'?'+':'−'}${won(e.amount)}</span></button>`).join('')}</div>` : '<div class="emptyBox">아직 쓴 내역이 없어요.</div>'}`;
+}
+function bindInput(){
+  const root = $('inForm'); if(!root) return;
+  const ctl = bindEnFields(root, draft, ()=>{ ctl.keep && 0; render(); });
+  $('inSave').onclick = async ()=>{
+    if(await ctl.save()){
+      toast('저장했어요');
+      draft = Object.assign(newEntry(draft.date), {type: draft.type, cat: draft.cat, method: draft.method});   // 날짜·분류·결제수단은 그대로 두고 금액·내용만 비움
+      render();
+      const a = document.querySelector('#inForm [data-f="a"]'); if(a) a.focus();
+    }
+  };
 }
 document.addEventListener('keydown', ev=>{ if(ev.key!=='Escape') return; if(enEdit){ enEdit = null; render(); } else if(evEdit){ evEdit = null; render(); } else if(popDay){ popDay = ''; renderPop(); } });
 
