@@ -166,7 +166,12 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;}
 // ===== 클라우드 설정: Firebase 콘솔 → 프로젝트 설정 → 내 앱(웹) → 구성(config) 값을 여기에 붙여 넣기 =====
 // 비워 두면 '미리보기 모드'(이 기기에만 저장)로 동작해요.
 const FIREBASE_CONFIG = {
-  // apiKey: "...", authDomain: "...", projectId: "...", storageBucket: "...", messagingSenderId: "...", appId: "..."
+  apiKey: "AIzaSyDMkKATqs9WC5wFh5oHJWT-fYbwsF9qi_4",
+  authDomain: "parkeunmi-b5710.firebaseapp.com",
+  projectId: "parkeunmi-b5710",
+  storageBucket: "parkeunmi-b5710.firebasestorage.app",
+  messagingSenderId: "467975245504",
+  appId: "1:467975245504:web:82d8922eeccd31bd36a725"
 };
 const SDK = 'https://www.gstatic.com/firebasejs/12.19.0/';
 const COL = 'jjun';   // 클라우드 안의 폴더 이름
@@ -201,7 +206,7 @@ const KINDS = [['1','중요'],['2','일반'],['3','기타']];
 
 // ===== 저장소: 클라우드(Firebase) 또는 이 기기(미리보기) =====
 const cloud = !!(FIREBASE_CONFIG && FIREBASE_CONFIG.projectId);
-let F = null, fs = null, A = null, auth = null, user = null;
+let F = null, fs = null, A = null, auth = null, user = null, authReady = false;
 const docs = {}, unsubs = {};
 function setLive(on, t){ $('live').classList.toggle('on', on); $('liveT').textContent = t; }
 function parseJson(v, d){ try{ const x = JSON.parse(v); return x ?? d; }catch(e){ return d; } }
@@ -240,6 +245,7 @@ const endOf = e => (e.e && e.e > e.d ? e.e : e.d);
 // ===== 화면 =====
 function render(){
   const app = $('app');
+  if(cloud && !authReady){ app.innerHTML = '<div class="login"><span class="logo">JJUN</span><div style="color:var(--muted)">불러오는 중…</div></div>'; return; }
   if(cloud && !user){ app.innerHTML = loginHtml(); bindLogin(); return; }
   const top = `${cloud ? '' : '<div class="banner">🧪 미리보기 모드 — 이 기기에만 저장돼요. 클라우드를 연결하면 PC·휴대폰이 실시간으로 함께 바뀌어요.</div>'}
     <div class="tabs" role="tablist"><button type="button" data-v="cal" class="${view==='cal'?'on':''}">📅 캘린더</button><button type="button" data-v="led" class="${view==='led'?'on':''}">💰 가계부</button></div>`;
@@ -499,7 +505,7 @@ else {
     const app = Ap.initializeApp(FIREBASE_CONFIG); F = Fm; fs = Fm.getFirestore(app); A = Au; auth = Au.getAuth(app);
     $('outBtn').onclick = async ()=>{ try{ await Au.signOut(auth); }catch(e){} };
     Au.onAuthStateChanged(auth, u=>{
-      user = u || null; $('outBtn').hidden = !user;
+      user = u || null; authReady = true; $('outBtn').hidden = !user;
       Object.keys(unsubs).forEach(k=>{ try{ typeof unsubs[k]==='function' && unsubs[k](); }catch(e){} delete unsubs[k]; delete docs[k]; });
       setLive(!!user, user ? '실시간 연동' : '로그인 필요'); render();
     });
