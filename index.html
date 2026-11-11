@@ -178,6 +178,7 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;}
 .cg span{font-size:20px;} .cg.on{border-color:var(--pink);background:var(--pink-s);color:var(--pink-d);box-shadow:inset 0 0 0 1px var(--pink);}
 .inForm{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px;max-width:640px;}
 .saveBig{height:48px;font-size:16px;}
+.inBtns{display:grid;grid-template-columns:1fr 2fr;gap:8px;}
 .sub{overflow-y:hidden;}
 /* 로그인 */
 .login{max-width:360px;margin:12vh auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;text-align:center;}
@@ -551,13 +552,14 @@ function inputHtml(){
   if(!draft) draft = newEntry();
   const all = []; ledYears(addDays(todayStr(), -400), todayStr()).forEach(y=> (docs[ledId(y)] || []).forEach(x=> all.push(x)));
   const recent = all.sort((a,b)=> (b.ts||0) - (a.ts||0)).slice(0, 8);
-  return `<div class="inForm" id="inForm">${enFields(draft)}<button type="button" class="btn pri saveBig" id="inSave">💾 저장</button></div>
+  return `<div class="inForm" id="inForm">${enFields(draft)}<div class="inBtns"><button type="button" class="btn saveBig" id="inCancel">취소</button><button type="button" class="btn pri saveBig" id="inSave">💾 저장</button></div></div>
     <div class="secT" style="margin:16px 0 8px">최근에 쓴 내역</div>
     ${recent.length ? `<div class="dayBlk">${recent.map(e=> `<button type="button" class="tx" data-lid="${esc(e.id)}" data-ly="${esc(e.date.slice(0,4))}"><span class="ic">${icon(e.cat)}</span><span class="tm"><b>${esc(e.item || e.cat)}</b><small>${esc(e.date.slice(5).replace('-','/'))} · ${esc(e.cat)}${e.method ? ' · ' + esc(e.method) : ''}</small></span><span class="am ${e.type==='수입'?'i':'o'}">${e.type==='수입'?'+':'−'}${won(e.amount)}</span></button>`).join('')}</div>` : '<div class="emptyBox">아직 쓴 내역이 없어요.</div>'}`;
 }
 function bindInput(){
   const root = $('inForm'); if(!root) return;
   const ctl = bindEnFields(root, draft, ()=>{ ctl.keep && 0; render(); });
+  $('inCancel').onclick = ()=>{ draft = null; ledTab = 'list'; ls.set('jjun_ledTab', ledTab); window.scrollTo(0, 0); render(); };   // 취소 → 가계부 첫 화면(내역)
   $('inSave').onclick = async ()=>{
     if(await ctl.save()){
       toast('저장했어요');
