@@ -25,7 +25,7 @@ header .live{margin-left:auto;font-size:11.5px;color:var(--muted);display:flex;a
 header .live i{width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;}
 header .live.on i{background:#16a34a;}
 .hbtn{border:1px solid var(--pink-l);background:var(--card);color:var(--pink-d);border-radius:8px;height:32px;padding:0 10px;font-size:12.5px;font-weight:700;cursor:pointer;}
-main{max-width:1200px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));}
+main{max-width:1200px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right,0px)) calc(96px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));}
 .banner{background:#fef3c7;color:#78350f;border:1px solid #fcd34d;border-radius:10px;padding:8px 12px;font-size:12.5px;margin:0 0 10px;}
 .tabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap;}
 .tabs button{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;height:38px;padding:0 18px;font-size:14.5px;font-weight:800;cursor:pointer;}
@@ -131,6 +131,51 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;}
 .codes .add{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line);}
 .codes .add input{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;padding:0 8px;height:34px;font:inherit;font-size:15px;background:var(--card);color:var(--text);}
 .budIn{width:110px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;text-align:right;font:inherit;font-size:14px;background:var(--card);color:var(--text);font-variant-numeric:tabular-nums;}
+/* 일반 가계부 */
+.mNav{display:flex;align-items:center;gap:6px;margin:0 0 10px;}
+.mNav button:not(.today){border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;height:36px;min-width:36px;font-size:18px;cursor:pointer;}
+.mNav b{font-size:20px;min-width:120px;text-align:center;}
+.sumBar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 12px;}
+.sumBar div{padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0;} .sumBar div+div{border-left:1px solid var(--line);}
+.sumBar span{font-size:12px;color:var(--muted);font-weight:700;} .sumBar b{font-size:18px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.i{color:var(--inc);} .o{color:var(--exp);}
+.srch input{width:100%;border:1px solid var(--line);border-radius:10px;height:40px;padding:0 12px;font:inherit;font-size:15px;background:var(--card);color:var(--text);margin:0 0 10px;}
+.dayBlk{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden;}
+.dayHd{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--line);font-size:13px;font-variant-numeric:tabular-nums;}
+.dayHd b{font-size:15px;} .dayHd .w{color:var(--muted);} .dayHd .w.su{color:#dc2626;} .dayHd .w.sa{color:#2563eb;}
+.tdTag{background:var(--pink);color:#fff;border-radius:6px;padding:0 6px;font-size:11px;font-weight:800;}
+.dayHd .i,.dayHd .o{font-weight:800;}
+.tx{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;padding:10px 14px;text-align:left;font:inherit;color:inherit;cursor:pointer;}
+.tx+.tx{border-top:1px solid var(--line);} .tx:hover{background:var(--pink-s);}
+.tx .ic,.catRow .ic{width:38px;height:38px;border-radius:12px;background:var(--bg);display:grid;place-items:center;font-size:19px;flex:0 0 auto;}
+.tx .tm{flex:1;min-width:0;display:flex;flex-direction:column;} .tx .tm b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .tx .tm small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx .am{font-weight:800;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.emptyBox{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:28px 16px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6;}
+.fab{position:fixed;right:max(20px,calc(env(safe-area-inset-right,0px) + 16px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;border:0;background:var(--pink);color:#fff;font-size:32px;line-height:1;box-shadow:0 8px 20px rgba(219,39,119,.4);cursor:pointer;z-index:30;}
+.statTop{display:flex;align-items:center;gap:20px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 12px;flex-wrap:wrap;justify-content:center;}
+.donut{width:170px;height:170px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;}
+.donut>div{width:104px;height:104px;border-radius:50%;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.donut small{font-size:12px;color:var(--muted);} .donut b{font-size:16px;font-variant-numeric:tabular-nums;}
+.cmp{font-size:13px;color:var(--muted);text-align:center;line-height:1.6;} .cmp b{font-size:18px;}
+.catList{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 12px;}
+.catRow{display:grid;grid-template-columns:10px 38px minmax(0,1fr) auto auto;grid-template-rows:auto 6px;column-gap:10px;row-gap:4px;align-items:center;padding:9px 0;}
+.catRow+.catRow{border-top:1px solid var(--line);}
+.catRow .dot{width:10px;height:10px;border-radius:50%;} .catRow .ic{grid-row:1 / span 2;}
+.catRow .cn{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .catRow .pc{color:var(--muted);font-size:12.5px;} .catRow .cv{font-weight:800;font-variant-numeric:tabular-nums;text-align:right;}
+.catRow .cbar{grid-column:3 / -1;height:6px;border-radius:3px;background:var(--bg);overflow:hidden;} .catRow .cbar i{display:block;height:100%;border-radius:3px;}
+.budBox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;}
+.budIn{width:150px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;text-align:right;font:inherit;font-size:16px;background:var(--card);color:var(--text);font-variant-numeric:tabular-nums;}
+.bigProg{height:14px;border-radius:7px;background:var(--bg);overflow:hidden;margin:14px 0 10px;} .bigProg i{display:block;height:100%;background:var(--pink);border-radius:7px;} .bigProg.over i{background:var(--exp);}
+.budNums{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;} .budNums div{display:flex;flex-direction:column;gap:2px;} .budNums small{color:var(--muted);font-size:12px;font-weight:700;} .budNums b{font-size:19px;font-variant-numeric:tabular-nums;}
+.codes li .ic{width:28px;height:28px;border-radius:8px;background:var(--bg);display:grid;place-items:center;font-size:15px;flex:0 0 auto;} .codes li .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-radius:10px;padding:4px;gap:4px;}
+.seg button{border:0;background:none;height:38px;border-radius:8px;font-weight:800;font-size:15px;color:var(--muted);cursor:pointer;}
+.seg button.on{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.12);} .seg button.on.o{color:var(--exp);} .seg button.on.i{color:var(--inc);}
+.amtBox{display:flex;align-items:baseline;gap:6px;border-bottom:2px solid var(--line);padding:4px 2px;} .amtBox.o{border-color:#fca5a5;} .amtBox.i{border-color:#93c5fd;}
+.amtBox input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:30px;font-weight:800;text-align:right;color:var(--text);outline:none;font-variant-numeric:tabular-nums;} .amtBox span{font-size:18px;font-weight:700;color:var(--muted);}
+.catGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;}
+.cg{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:7px 2px;font-size:11.5px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cg span{font-size:20px;} .cg.on{border-color:var(--pink);background:var(--pink-s);color:var(--pink-d);box-shadow:inset 0 0 0 1px var(--pink);}
 /* 로그인 */
 .login{max-width:360px;margin:12vh auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;text-align:center;}
 .login .logo{width:64px;height:64px;font-size:18px;border-radius:14px;margin:0 auto;}
@@ -146,8 +191,8 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;}
   .ev{font-size:10.5px;padding:1px 2px;} .money{font-size:10px;} .money .lg{display:none;} .money .sm{display:inline;}
   .cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;} .card{padding:8px;} .card .v{font-size:15px;}
   .two,.codes{grid-template-columns:1fr;}
+  .sumBar b{font-size:14.5px;} .sumBar div{padding:8px 10px;} .mNav b{font-size:17px;min-width:100px;} .donut{width:150px;height:150px;} .donut>div{width:92px;height:92px;} .budIn{width:130px;}
   .filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;} .filters .kw{grid-column:1 / -1;min-width:0;} .filters input{width:100%;} .filters .btn{padding:0 8px;}
-  .ledRow{flex-wrap:wrap;} .ledRow .sub{flex-basis:100%;} .ledRow #addEn{width:100%;}
   table.t{font-size:12.5px;} .t th,.t td{padding:7px 6px;} .t .hm{display:none;}
   .form{grid-template-columns:1fr;}
 }
@@ -228,7 +273,7 @@ const codes = () => Object.assign({}, DEF_CODES, docs.codes || {});
 
 // ===== 상태 =====
 let view = ls.get('jjun_view', 'cal');                    // cal | led
-let ledTab = ls.get('jjun_ledTab', 'data');               // data | month | budget | codes
+let ledTab = ls.get('jjun_ledTab', 'list');               // list | stat | budget | set
 let ym = ls.get('jjun_ym', null) || (()=>{ const t = new Date(); return {y:t.getFullYear(), m:t.getMonth()+1}; })();
 let lm = ls.get('jjun_lm', null) || {y: ym.y, m: ym.m};   // 가계부 월
 let popDay = '', evEdit = null, enEdit = null;
@@ -358,84 +403,88 @@ function renderEv(){
   }; }
 }
 
-// ----- 가계부 -----
+// ----- 가계부 (일반 가계부: 내역 · 통계 · 예산 · 설정) -----
+const ICON = {'식비':'🍚','외식·카페':'☕','생활용품':'🧴','주거·관리비':'🏠','통신비':'📱','교통·차량':'🚗','의료·건강':'💊','교육':'📚','의류·미용':'👗','경조사':'🎁','보험':'🛡️','저축·투자':'🏦','여가·여행':'✈️','기타지출':'📦','급여':'💼','상여':'🎉','부수입':'💵','용돈':'🧧','이자·배당':'📈','환급':'↩️','기타수입':'➕'};
+const icon = c => ICON[c] || '🏷️';
+const COLORS = ['#ec4899','#f59e0b','#10b981','#3b82f6','#8b5cf6','#ef4444','#14b8a6','#f97316','#6366f1','#84cc16','#06b6d4','#a855f7','#64748b','#e11d48'];
 function newEntry(date){ const c = codes(); return {date: date || todayStr(), type:'지출', cat: c.exp[0], item:'', method: c.method[0], amount:'', note:'', isNew:true}; }
+function monthList(){ const {y, m} = lm, days = new Date(y, m, 0).getDate(); return ledIn(ds(y,m,1), ds(y,m,days)); }
+const sumOf = (list, t) => list.filter(e=> e.type===t).reduce((s,e)=> s + e.amount, 0);
+function monthNav(){ const {y, m} = lm; return `<div class="mNav"><button type="button" id="lmPrev" aria-label="이전 달">‹</button><b>${y}년 ${m}월</b><button type="button" id="lmNext" aria-label="다음 달">›</button><button type="button" class="today" id="lmToday">이번 달</button></div>`; }
 function ledHtml(){
   watch('codes'); watch('budget');
-  const tabs = [['data','DATA'],['month','월간내역'],['budget','예산'],['codes','코드관리']];
-  const sub = `<div class="row ledRow" style="margin:0 0 10px"><div class="sub" style="flex:1;margin:0">${tabs.map(([v,n])=> `<button type="button" data-lt="${v}" class="${ledTab===v?'on':''}">${n}</button>`).join('')}</div><button type="button" class="btn pri" id="addEn">＋ 항목 입력</button></div>`;
-  return sub + (ledTab==='data' ? dataHtml() : ledTab==='month' ? monthHtml() : ledTab==='budget' ? budgetHtml() : codesHtml());
+  const tabs = [['list','📋 내역'],['stat','📊 통계'],['budget','🎯 예산'],['set','⚙️ 설정']];
+  if(!tabs.some(t=> t[0]===ledTab)) ledTab = 'list';
+  const list = monthList(), inc = sumOf(list,'수입'), exp = sumOf(list,'지출');
+  const head = `${monthNav()}
+    <div class="sumBar"><div><span>수입</span><b class="i">+${won(inc)}</b></div><div><span>지출</span><b class="o">−${won(exp)}</b></div><div><span>합계</span><b class="${inc-exp<0?'o':''}">${inc-exp<0?'−':''}${won(Math.abs(inc-exp))}</b></div></div>
+    <div class="sub">${tabs.map(([v,n])=> `<button type="button" data-lt="${v}" class="${ledTab===v?'on':''}">${n}</button>`).join('')}</div>`;
+  const body = ledTab==='list' ? listHtml(list) : ledTab==='stat' ? statHtml(list) : ledTab==='budget' ? budgetHtml(list) : setHtml();
+  return head + body + `<button type="button" class="fab" id="addEn" aria-label="가계부 쓰기">＋</button>`;
 }
-function sumCards(list){
-  const i = list.filter(e=> e.type==='수입').reduce((s,e)=> s+e.amount, 0), o = list.filter(e=> e.type==='지출').reduce((s,e)=> s+e.amount, 0);
-  return `<div class="cards"><div class="card"><div class="k">수입</div><div class="v i">${won(i)}</div></div><div class="card"><div class="k">지출</div><div class="v o">${won(o)}</div></div><div class="card"><div class="k">차액</div><div class="v ${i-o<0?'o':''}">${won(i-o)}</div></div></div>`;
-}
-function rowsHtml(list){
-  return list.map(e=> `<tr class="r" data-lid="${esc(e.id)}" data-ly="${esc(e.date.slice(0,4))}"><td class="d">${esc(e.date.slice(2).replace(/-/g,'.'))}<br><span style="color:var(--muted);font-size:11.5px">${W[wd(e.date)]}</span></td><td><span class="tag ${e.type==='수입'?'i':'o'}">${esc(e.type)}</span></td><td>${esc(e.cat)}${e.item ? `<div style="color:var(--muted);font-size:12px">${esc(e.item)}</div>` : ''}</td><td class="hm">${esc(e.method||'')}</td><td class="n ${e.type==='수입'?'i':'o'}">${e.type==='수입'?'+':'−'}${won(e.amount)}</td><td class="hm">${esc(e.note||'')}</td></tr>`).join('');
-}
-const thead = `<thead><tr><th>일자</th><th>구분</th><th>계정과목 · 적요</th><th class="hm">출납방식</th><th class="n">금액</th><th class="hm">비고</th></tr></thead>`;
-function dataHtml(){
+function listHtml(list){
   const kw = (flt.kw||'').trim().toLowerCase();
-  let list = ledIn(flt.a, flt.b);
-  if(kw) list = list.filter(e=> [e.cat, e.item, e.method, e.note, e.type, String(e.amount)].join(' ').toLowerCase().includes(kw));
-  list.sort((a,b)=> a.date===b.date ? (b.ts||0)-(a.ts||0) : b.date.localeCompare(a.date));   // 최신순
-  return `<div class="filters"><label>시작일<input type="date" id="fA" value="${esc(flt.a)}"></label><label>종료일<input type="date" id="fB" value="${esc(flt.b)}"></label><label class="kw">통합검색어<input type="search" id="fK" value="${esc(flt.kw||'')}" placeholder="계정과목·적요·출납방식·비고"></label><button type="button" class="btn" id="fMonth">이번 달</button><button type="button" class="btn" id="fYear">올해</button><button type="button" class="btn" id="fCsv">CSV 내보내기</button></div>
-    ${sumCards(list)}
-    <div class="tblWrap"><table class="t">${thead}<tbody>${list.length ? rowsHtml(list) : `<tr><td colspan="6" class="empty">이 기간에 내역이 없어요. ＋ 항목 입력으로 넣어 주세요.</td></tr>`}</tbody><tfoot><tr><td colspan="3">${list.length}건</td><td class="hm"></td><td class="n">${won(list.reduce((s,e)=> s + (e.type==='수입'?e.amount:-e.amount), 0))}</td><td class="hm"></td></tr></tfoot></table></div>`;
+  let L = list;
+  if(kw) L = L.filter(e=> [e.cat, e.item, e.method, e.note, String(e.amount)].join(' ').toLowerCase().includes(kw));
+  L = L.slice().sort((a,b)=> a.date===b.date ? (b.ts||0)-(a.ts||0) : b.date.localeCompare(a.date));
+  const days = {}; L.forEach(e=> (days[e.date] = days[e.date] || []).push(e));
+  const blocks = Object.keys(days).map(D=>{
+    const es = days[D], di = sumOf(es,'수입'), dx = sumOf(es,'지출'), [,mm,dd] = D.split('-').map(Number), w = wd(D);
+    return `<div class="dayBlk"><div class="dayHd"><b>${dd}일</b><span class="w${w===0||HOL[D]?' su':w===6?' sa':''}">${W[w]}요일</span>${D===todayStr()?'<span class="tdTag">오늘</span>':''}<span class="sp"></span>${di?`<span class="i">+${won(di)}</span>`:''}${dx?`<span class="o">−${won(dx)}</span>`:''}</div>
+      ${es.map(e=> `<button type="button" class="tx" data-lid="${esc(e.id)}" data-ly="${esc(e.date.slice(0,4))}"><span class="ic">${icon(e.cat)}</span><span class="tm"><b>${esc(e.item || e.cat)}</b><small>${esc(e.cat)}${e.method ? ' · ' + esc(e.method) : ''}${e.note ? ' · ' + esc(e.note) : ''}</small></span><span class="am ${e.type==='수입'?'i':'o'}">${e.type==='수입'?'+':'−'}${won(e.amount)}</span></button>`).join('')}</div>`;
+  }).join('');
+  return `<div class="srch"><input type="search" id="fK" value="${esc(flt.kw||'')}" placeholder="🔍 이번 달 내역 검색 (메모·분류·금액)"></div>
+    ${blocks || `<div class="emptyBox">${kw ? '찾는 내역이 없어요.' : '이번 달 내역이 없어요.<br>오른쪽 아래 <b>＋</b>를 눌러 첫 내역을 써 보세요.'}</div>`}
+    ${L.length ? `<div class="row" style="margin-top:10px"><span class="sp"></span><button type="button" class="btn" id="fCsv">엑셀(CSV)로 받기</button></div>` : ''}`;
 }
-function monthHtml(){
-  const {y, m} = lm, days = new Date(y, m, 0).getDate(), list = ledIn(ds(y,m,1), ds(y,m,days)).sort((a,b)=> a.date===b.date ? (b.ts||0)-(a.ts||0) : b.date.localeCompare(a.date));
-  const by = t=>{ const o = {}; list.filter(e=> e.type===t).forEach(e=>{ o[e.cat] = o[e.cat] || {n:0, s:0}; o[e.cat].n++; o[e.cat].s += e.amount; }); return Object.entries(o).sort((a,b)=> b[1].s - a[1].s); };
-  const tbl = (t, cls)=>{ const rows = by(t), tot = rows.reduce((s,[,v])=> s+v.s, 0);
-    return `<div class="box"><h3>${t}세부내역<span class="n ${cls}" style="color:var(${cls==='i'?'--inc':'--exp'})">${won(tot)}</span></h3><table class="t"><thead><tr><th>계정과목</th><th class="n">건수</th><th class="n">금액</th><th class="n">비율</th></tr></thead><tbody>${rows.length ? rows.map(([c,v])=> `<tr><td>${esc(c)}</td><td class="n">${v.n}</td><td class="n">${won(v.s)}</td><td class="n">${tot ? Math.round(v.s/tot*100) : 0}%</td></tr>`).join('') : '<tr><td colspan="4" class="empty">없음</td></tr>'}</tbody></table></div>`; };
-  return `<div class="top"><div class="nav"><button type="button" id="lmPrev" aria-label="이전 달">‹</button><span class="ym">${y}년 ${m}월</span><button type="button" id="lmNext" aria-label="다음 달">›</button></div><button type="button" class="today" id="lmToday">이번 달</button></div>
-    ${sumCards(list)}<div class="two">${tbl('수입','i')}${tbl('지출','o')}</div>
-    <div class="tblWrap"><table class="t">${thead}<tbody>${list.length ? rowsHtml(list) : '<tr><td colspan="6" class="empty">이 달에 내역이 없어요.</td></tr>'}</tbody></table></div>`;
+function statHtml(list){
+  const by = {}; list.filter(e=> e.type==='지출').forEach(e=> by[e.cat] = (by[e.cat]||0) + e.amount);
+  const rows = Object.entries(by).sort((a,b)=> b[1]-a[1]), tot = rows.reduce((s,[,v])=> s+v, 0);
+  if(!tot) return '<div class="emptyBox">이번 달 지출이 없어요.</div>';
+  let acc = 0; const stops = rows.map(([c,v],i)=>{ const a = acc/tot*360; acc += v; return `${COLORS[i%COLORS.length]} ${a}deg ${acc/tot*360}deg`; }).join(',');
+  // 지난달과 비교
+  const {y, m} = lm, py = m===1 ? y-1 : y, pm = m===1 ? 12 : m-1, prev = sumOf(ledIn(ds(py,pm,1), ds(py,pm,new Date(py,pm,0).getDate())),'지출');
+  const diff = tot - prev;
+  return `<div class="statTop"><div class="donut" style="background:conic-gradient(${stops})"><div><small>지출</small><b>${won(tot)}</b></div></div>
+      <div class="cmp">지난달보다<br><b class="${diff>0?'o':'i'}">${diff>0?'▲ ':'▼ '}${won(Math.abs(diff))}원</b><br><small>${diff>0?'더 썼어요':'덜 썼어요'}</small></div></div>
+    <div class="catList">${rows.map(([c,v],i)=> `<div class="catRow"><span class="dot" style="background:${COLORS[i%COLORS.length]}"></span><span class="ic">${icon(c)}</span><span class="cn">${esc(c)}</span><span class="pc">${Math.round(v/tot*100)}%</span><span class="cv">${won(v)}</span><span class="cbar"><i style="width:${v/rows[0][1]*100}%;background:${COLORS[i%COLORS.length]}"></i></span></div>`).join('')}</div>`;
 }
-function budgetHtml(){
-  const {y, m} = lm, days = new Date(y, m, 0).getDate(), bud = docs.budget || {}, c = codes();
-  const spent = {}; ledIn(ds(y,m,1), ds(y,m,days)).filter(e=> e.type==='지출').forEach(e=> spent[e.cat] = (spent[e.cat]||0) + e.amount);
-  const cats = Array.from(new Set(c.exp.concat(Object.keys(spent))));
-  let tb = 0, ts = 0;
-  const rows = cats.map(cat=>{ const b = +bud[cat] || 0, s = spent[cat] || 0; tb += b; ts += s; const pct = b ? Math.min(s/b*100, 100) : (s ? 100 : 0);
-    return `<tr><td>${esc(cat)}</td><td class="n"><input class="budIn" inputmode="numeric" data-bcat="${esc(cat)}" value="${b ? won(b) : ''}" placeholder="0" aria-label="${esc(cat)} 예산"></td><td class="n o">${won(s)}</td><td class="n ${b && s > b ? 'o' : ''}">${b ? won(b - s) : '—'}</td><td style="min-width:70px"><div class="prog${b && s > b ? ' over' : ''}"><i style="width:${pct}%"></i></div></td></tr>`; }).join('');
-  return `<div class="top"><div class="nav"><button type="button" id="lmPrev" aria-label="이전 달">‹</button><span class="ym">${y}년 ${m}월</span><button type="button" id="lmNext" aria-label="다음 달">›</button></div><button type="button" class="today" id="lmToday">이번 달</button></div>
-    <div class="cards"><div class="card"><div class="k">월 예산</div><div class="v">${won(tb)}</div></div><div class="card"><div class="k">지출</div><div class="v o">${won(ts)}</div></div><div class="card"><div class="k">남은 예산</div><div class="v ${tb - ts < 0 ? 'o' : 'i'}">${won(tb - ts)}</div></div></div>
-    <div class="tblWrap"><table class="t"><thead><tr><th>지출 계정과목</th><th class="n">월 예산</th><th class="n">지출</th><th class="n">남은 금액</th><th>사용률</th></tr></thead><tbody>${rows}</tbody></table></div>
-    <p class="note">월 예산은 매달 똑같이 적용돼요. 금액 칸에 숫자를 넣고 다른 곳을 누르면 저장돼요.</p>`;
+function budgetHtml(list){
+  const b = docs.budget || {}, total = +b.total || 0, exp = sumOf(list,'지출');
+  const {y, m} = lm, now = new Date(), isCur = y===now.getFullYear() && m===now.getMonth()+1, days = new Date(y,m,0).getDate();
+  const left = total - exp, daysLeft = isCur ? days - now.getDate() + 1 : 0, pct = total ? Math.min(exp/total*100, 100) : 0;
+  return `<div class="budBox"><div class="row"><b style="font-size:15px">한 달 예산</b><span class="sp"></span><input class="budIn" id="budTotal" inputmode="numeric" value="${total ? won(total) : ''}" placeholder="예: 1,500,000" aria-label="한 달 예산"><span>원</span></div>
+    ${total ? `<div class="bigProg${exp>total?' over':''}"><i style="width:${pct}%"></i></div>
+      <div class="budNums"><div><small>쓴 돈</small><b class="o">${won(exp)}</b></div><div><small>${left<0?'초과':'남은 돈'}</small><b class="${left<0?'o':'i'}">${won(Math.abs(left))}</b></div>${isCur && left>0 ? `<div><small>하루에 쓸 수 있는 돈</small><b>${won(Math.floor(left/daysLeft))}</b></div>` : ''}</div>`
+      : '<div class="emptyBox" style="margin:10px 0 0">한 달 예산을 넣으면 남은 돈과 하루에 쓸 수 있는 돈을 알려 드려요.</div>'}</div>
+    <p class="note">예산은 매달 똑같이 적용돼요. 금액을 넣고 다른 곳을 누르면 저장돼요.</p>`;
 }
-function codesHtml(){
-  const c = codes(), col = (k, t)=> `<div class="box"><h3>${t}</h3><ul>${c[k].map((v,i)=> `<li><span>${esc(v)}</span><button type="button" data-up="${k}:${i}" aria-label="위로">▲</button><button type="button" data-ren="${k}:${i}" aria-label="이름 바꾸기">✏️</button><button type="button" data-rm="${k}:${i}" aria-label="삭제">✕</button></li>`).join('')}</ul><div class="add"><input type="text" id="add_${k}" maxlength="20" placeholder="새 항목"><button type="button" class="btn" data-add="${k}">추가</button></div></div>`;
-  return `<div class="codes">${col('inc','수입 계정과목')}${col('exp','지출 계정과목')}${col('method','출납방식')}</div><p class="note">이미 넣은 내역의 이름은 바뀌지 않아요. 항목을 지워도 예전 내역은 그대로 남아요.</p>`;
+function setHtml(){
+  const c = codes(), col = (k, t)=> `<div class="box"><h3>${t}</h3><ul>${c[k].map((v,i)=> `<li>${k==='method'?'':`<span class="ic">${icon(v)}</span>`}<span class="nm">${esc(v)}</span><button type="button" data-up="${k}:${i}" aria-label="위로">▲</button><button type="button" data-ren="${k}:${i}" aria-label="이름 바꾸기">✏️</button><button type="button" data-rm="${k}:${i}" aria-label="삭제">✕</button></li>`).join('')}</ul><div class="add"><input type="text" id="add_${k}" maxlength="20" placeholder="새 항목"><button type="button" class="btn" data-add="${k}">추가</button></div></div>`;
+  return `<div class="codes">${col('exp','지출 분류')}${col('inc','수입 분류')}${col('method','결제 수단')}</div><p class="note">이름을 바꾸거나 지워도 이미 쓴 내역은 그대로 남아요.</p>`;
 }
 function bindLed(){
   document.querySelectorAll('[data-lt]').forEach(b=> b.onclick = ()=>{ ledTab = b.dataset.lt; ls.set('jjun_ledTab', ledTab); render(); });
-  $('addEn').onclick = ()=>{ enEdit = newEntry(); renderEn(); };
-  document.querySelectorAll('tr[data-lid]').forEach(tr=> tr.onclick = ()=>{ const e = (docs[ledId(tr.dataset.ly)] || []).find(x=> x.id===tr.dataset.lid); if(e){ enEdit = Object.assign({}, e, {orig: e.id, origY: tr.dataset.ly}); renderEn(); } });
-  if($('lmPrev')){ const mv = n=>{ let {y,m} = lm; m += n; if(m<1){m=12;y--;} if(m>12){m=1;y++;} lm = {y,m}; ls.set('jjun_lm', lm); render(); };
-    $('lmPrev').onclick = ()=> mv(-1); $('lmNext').onclick = ()=> mv(1); $('lmToday').onclick = ()=>{ const t = new Date(); lm = {y:t.getFullYear(), m:t.getMonth()+1}; ls.set('jjun_lm', lm); render(); }; }
-  if($('fA')){
-    const upd = ()=>{ flt = {a: $('fA').value || flt.a, b: $('fB').value || flt.b, kw: $('fK').value}; if(flt.b < flt.a) flt.b = flt.a; ls.set('jjun_flt', flt); render(); };
-    $('fA').onchange = upd; $('fB').onchange = upd;
-    let tm = 0; $('fK').oninput = ()=>{ clearTimeout(tm); tm = setTimeout(()=>{ const pos = $('fK').selectionStart; upd(); const k = $('fK'); k.focus(); try{ k.setSelectionRange(pos, pos); }catch(e){} }, 350); };
-    $('fMonth').onclick = ()=>{ const t = todayStr(); flt = {a: t.slice(0,8)+'01', b: ds(+t.slice(0,4), +t.slice(5,7), new Date(+t.slice(0,4), +t.slice(5,7), 0).getDate()), kw: flt.kw}; ls.set('jjun_flt', flt); render(); };
-    $('fYear').onclick = ()=>{ const y = todayStr().slice(0,4); flt = {a: y+'-01-01', b: y+'-12-31', kw: flt.kw}; ls.set('jjun_flt', flt); render(); };
-    $('fCsv').onclick = ()=>{
-      const list = ledIn(flt.a, flt.b).sort((a,b)=> a.date.localeCompare(b.date));
-      const q = v=> `"${String(v ?? '').replace(/"/g,'""')}"`;
-      const csv = '﻿' + [['일자','구분','계정과목','적요','출납방식','금액','비고']].concat(list.map(e=> [e.date, e.type, e.cat, e.item, e.method, e.amount, e.note])).map(r=> r.map(q).join(',')).join('\r\n');
-      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'})); a.download = `가계부_${flt.a}_${flt.b}.csv`; document.body.appendChild(a); a.click(); a.remove();
-    };
-  }
-  document.querySelectorAll('[data-bcat]').forEach(inp=>{
-    inp.onfocus = ()=>{ inp.value = inp.value.replace(/[^0-9]/g,''); inp.select(); };
+  $('addEn').onclick = ()=>{ const {y,m} = lm, t = todayStr(); enEdit = newEntry(t.slice(0,7) === key(y,m) ? t : ds(y,m,1)); renderEn(); };
+  document.querySelectorAll('[data-lid]').forEach(tr=> tr.onclick = ()=>{ const e = (docs[ledId(tr.dataset.ly)] || []).find(x=> x.id===tr.dataset.lid); if(e){ enEdit = Object.assign({}, e, {orig: e.id, origY: tr.dataset.ly}); renderEn(); } });
+  const mv = n=>{ let {y,m} = lm; m += n; if(m<1){m=12;y--;} if(m>12){m=1;y++;} lm = {y,m}; ls.set('jjun_lm', lm); render(); };
+  $('lmPrev').onclick = ()=> mv(-1); $('lmNext').onclick = ()=> mv(1); $('lmToday').onclick = ()=>{ const t = new Date(); lm = {y:t.getFullYear(), m:t.getMonth()+1}; ls.set('jjun_lm', lm); render(); };
+  let sx = 0, sy = 0;   // 휴대폰: 옆으로 밀면 달 넘김
+  const swipeEl = $('app'); swipeEl.ontouchstart = e=>{ sx = e.touches[0].clientX; sy = e.touches[0].clientY; }; swipeEl.ontouchend = e=>{ if(view!=='led' || e.target.closest('input,.tblWrap,.codes')) return; const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if(Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)*1.6) mv(dx < 0 ? 1 : -1); };
+  if($('fK')){ let tm = 0; $('fK').oninput = ()=>{ clearTimeout(tm); tm = setTimeout(()=>{ flt = Object.assign({}, flt, {kw: $('fK').value}); ls.set('jjun_flt', flt); const pos = $('fK').selectionStart; render(); const k = $('fK'); if(k){ k.focus(); try{ k.setSelectionRange(pos,pos); }catch(e){} } }, 300); }; }
+  if($('fCsv')) $('fCsv').onclick = ()=>{
+    const {y,m} = lm, list = monthList().sort((a,b)=> a.date.localeCompare(b.date)), q = v=> `"${String(v ?? '').replace(/"/g,'""')}"`;
+    const csv = '﻿' + [['날짜','구분','분류','내용','결제수단','금액','메모']].concat(list.map(e=> [e.date, e.type, e.cat, e.item, e.method, e.amount, e.note])).map(r=> r.map(q).join(',')).join('\r\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'})); a.download = `가계부_${y}-${pad(m)}.csv`; document.body.appendChild(a); a.click(); a.remove();
+  };
+  if($('budTotal')){ const inp = $('budTotal');
+    inp.onfocus = ()=>{ inp.value = inp.value.replace(/[^0-9]/g,''); };
     inp.onkeydown = e=>{ if(e.key==='Enter') inp.blur(); };
-    inp.onchange = async ()=>{ const v = +inp.value.replace(/[^0-9]/g,'') || 0, b = Object.assign({}, docs.budget || {}); if(v) b[inp.dataset.bcat] = v; else delete b[inp.dataset.bcat]; try{ await save('budget', b); toast('예산을 저장했어요'); }catch(err){ toast('저장하지 못했어요'); } };
-  });
+    inp.onchange = async ()=>{ const v = +inp.value.replace(/[^0-9]/g,'') || 0; try{ await save('budget', Object.assign({}, docs.budget || {}, {total: v})); toast('예산을 저장했어요'); }catch(err){ toast('저장하지 못했어요'); } }; }
   const setCodes = async c=>{ try{ await save('codes', c); }catch(err){ toast('저장하지 못했어요'); } };
-  document.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ const k = b.dataset.add, inp = $('add_' + k), v = inp.value.trim(); if(!v) return; const c = codes(); if(c[k].includes(v)) return toast('이미 있어요'); c[k] = c[k].concat(v); setCodes(c); });
+  document.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ const k = b.dataset.add, v = $('add_' + k).value.trim(); if(!v) return; const c = codes(); if(c[k].includes(v)) return toast('이미 있어요'); c[k] = c[k].concat(v); setCodes(c); });
   document.querySelectorAll('[data-rm]').forEach(b=> b.onclick = ()=>{ const [k,i] = b.dataset.rm.split(':'), c = codes(); if(c[k].length <= 1) return toast('하나는 남겨 두어야 해요'); if(b.dataset.armed){ c[k] = c[k].filter((_,j)=> j != i); setCodes(c); } else { b.dataset.armed = 1; b.textContent = '삭제?'; } });
-  document.querySelectorAll('[data-up]').forEach(b=> b.onclick = ()=>{ const [k,i] = b.dataset.up.split(':').map((x,j)=> j ? +x : x), c = codes(); if(i < 1) return; const a = c[k].slice(); [a[i-1], a[i]] = [a[i], a[i-1]]; c[k] = a; setCodes(c); });
+  document.querySelectorAll('[data-up]').forEach(b=> b.onclick = ()=>{ const [k,s] = b.dataset.up.split(':'), i = +s, c = codes(); if(i < 1) return; const a = c[k].slice(); [a[i-1], a[i]] = [a[i], a[i-1]]; c[k] = a; setCodes(c); });
   document.querySelectorAll('[data-ren]').forEach(b=> b.onclick = ()=>{ const [k,i] = b.dataset.ren.split(':'), li = b.closest('li'), c = codes(), old = c[k][i];
     li.innerHTML = `<input type="text" value="${esc(old)}" maxlength="20" style="flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font:inherit;font-size:15px;background:var(--card);color:var(--text)"><button type="button">저장</button>`;
     const inp = li.querySelector('input'); inp.focus(); li.querySelector('button').onclick = ()=>{ const v = inp.value.trim(); if(!v || v===old) return render(); const a = c[k].slice(); a[i] = v; c[k] = a; setCodes(c); }; });
@@ -445,27 +494,30 @@ function renderEn(){
   if(!enEdit){ if(box) box.remove(); return; }
   if(!box){ box = document.createElement('div'); box.id = 'enPop'; document.body.appendChild(box); }
   const e = enEdit, c = codes(), cats = e.type==='수입' ? c.inc : c.exp, catList = cats.includes(e.cat) || !e.cat ? cats : cats.concat(e.cat), mList = c.method.includes(e.method) || !e.method ? c.method : c.method.concat(e.method);
-  box.innerHTML = `<div class="scrim" id="enScrim"><div class="pop" role="dialog" aria-label="가계부 항목"><div class="popHd">${e.isNew ? '항목 입력' : '항목 수정'}<button type="button" class="x" id="enX" aria-label="닫기">✕</button></div>
-    <div class="popBody"><div class="form">
-      <label>일자<input type="date" id="enD" value="${esc(e.date)}"></label>
-      <div class="fld">구분<div class="chips"><button type="button" class="chip${e.type==='수입'?' on':''}" data-t="수입">수입</button><button type="button" class="chip${e.type==='지출'?' on':''}" data-t="지출">지출</button></div></div>
-      <label>계정과목<select id="enC">${catList.map(v=> `<option${v===e.cat?' selected':''}>${esc(v)}</option>`).join('')}</select></label>
-      <label>출납방식<select id="enM">${mList.map(v=> `<option${v===e.method?' selected':''}>${esc(v)}</option>`).join('')}</select></label>
-      <label class="full">적요<input type="text" id="enI" maxlength="60" value="${esc(e.item||'')}" placeholder="예: 마트 장보기"></label>
-      <label class="full">금액<input type="text" id="enA" inputmode="numeric" value="${e.amount ? won(e.amount) : ''}" placeholder="0"></label>
-      <label class="full">비고<input type="text" id="enN" maxlength="100" value="${esc(e.note||'')}" placeholder="선택 입력"></label>
-    </div><div class="msg" id="enMsg"></div></div>
+  box.innerHTML = `<div class="scrim" id="enScrim"><div class="pop" role="dialog" aria-label="가계부 쓰기"><div class="popHd">${e.isNew ? '가계부 쓰기' : '내역 고치기'}<button type="button" class="x" id="enX" aria-label="닫기">✕</button></div>
+    <div class="popBody">
+      <div class="seg"><button type="button" data-t="지출" class="${e.type==='지출'?'on o':''}">지출</button><button type="button" data-t="수입" class="${e.type==='수입'?'on i':''}">수입</button></div>
+      <div class="amtBox ${e.type==='수입'?'i':'o'}"><input type="text" id="enA" inputmode="numeric" value="${e.amount ? won(e.amount) : ''}" placeholder="0" aria-label="금액"><span>원</span></div>
+      <div class="catGrid">${catList.map(v=> `<button type="button" class="cg${v===e.cat?' on':''}" data-c="${esc(v)}"><span>${icon(v)}</span>${esc(v)}</button>`).join('')}</div>
+      <div class="form">
+        <label>날짜<input type="date" id="enD" value="${esc(e.date)}"></label>
+        <label>결제 수단<select id="enM">${mList.map(v=> `<option${v===e.method?' selected':''}>${esc(v)}</option>`).join('')}</select></label>
+        <label class="full">내용<input type="text" id="enI" maxlength="60" value="${esc(e.item||'')}" placeholder="${e.type==='수입' ? '예: 11월 월급' : '예: 마트 장보기'}"></label>
+        <label class="full">메모<input type="text" id="enN" maxlength="100" value="${esc(e.note||'')}" placeholder="선택"></label>
+      </div><div class="msg" id="enMsg"></div></div>
     <div class="popFt">${e.isNew ? '' : '<button type="button" class="btn del" id="enDel">🗑 삭제</button>'}<span class="sp"></span><button type="button" class="btn" id="enCancel">취소</button><button type="button" class="btn pri" id="enSave">💾 저장</button></div></div></div>`;
   const close = ()=>{ enEdit = null; render(); };
   $('enX').onclick = close; $('enCancel').onclick = close; $('enScrim').onclick = ev=>{ if(ev.target.id==='enScrim') close(); };
-  const keep = ()=>{ e.date = $('enD').value; e.cat = $('enC').value; e.method = $('enM').value; e.item = $('enI').value; e.amount = +$('enA').value.replace(/[^0-9]/g,'') || ''; e.note = $('enN').value; };
+  const keep = ()=>{ e.date = $('enD').value; e.method = $('enM').value; e.item = $('enI').value; e.amount = +$('enA').value.replace(/[^0-9]/g,'') || ''; e.note = $('enN').value; };
   box.querySelectorAll('[data-t]').forEach(b=> b.onclick = ()=>{ keep(); if(e.type === b.dataset.t) return; e.type = b.dataset.t; e.cat = (e.type==='수입' ? c.inc : c.exp)[0]; renderEn(); });
+  box.querySelectorAll('[data-c]').forEach(b=> b.onclick = ()=>{ e.cat = b.dataset.c; box.querySelectorAll('[data-c]').forEach(x=> x.classList.toggle('on', x===b)); });
   $('enA').oninput = ()=>{ const v = $('enA').value.replace(/[^0-9]/g,''); $('enA').value = v ? (+v).toLocaleString('ko-KR') : ''; };
+  if(e.isNew) setTimeout(()=>{ const a = $('enA'); if(a && !a.value) a.focus(); }, 50);
   const msg = t=> $('enMsg').textContent = t;
   $('enSave').onclick = async ()=>{
     keep();
-    if(!e.date) return msg('일자를 고르세요.');
     if(!(e.amount > 0)){ $('enA').focus(); return msg('금액을 넣어 주세요.'); }
+    if(!e.date) return msg('날짜를 고르세요.');
     const item = {id: e.orig || uid(), date: e.date, type: e.type, cat: e.cat, item: e.item.trim(), method: e.method, amount: e.amount, note: e.note.trim(), ts: e.ts || Date.now()};
     const ny = e.date.slice(0,4);
     try{
